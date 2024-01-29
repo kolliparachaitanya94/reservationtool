@@ -1,5 +1,5 @@
 <?php
-$servername = "localhost";
+$servername = "https://kolliparachaitanya94.github.io/reservationtool/";
 $username = "chaitu";
 $password = "chaitu";
 $dbname = "DeviceReservationSystem";
