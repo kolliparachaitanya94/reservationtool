@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>Device Reservation System</title>
     <style>
         body {
@@ -96,54 +97,49 @@
     </table>
 
     <script>
-        function getCurrentDateTime() {
-            const now = new Date();
-            const date = now.toLocaleDateString();
-            const time = now.toLocaleTimeString();
-            return `${date} ${time}`;
-        }
-
         function reserveDevice(deviceId) {
-            const availabilityCell = document.getElementById(`availability${deviceId}`);
-            const userCell = document.getElementById(`user${deviceId}`);
-            const teamCell = document.getElementById(`team${deviceId}`);
-            const timeCell = document.getElementById(`time${deviceId}`);
-            const userNameInput = document.getElementById(`userName${deviceId}`).value;
-            const teamNameInput = document.getElementById(`teamName${deviceId}`).value;
+        // ... (Your existing JavaScript code)
 
-            if (availabilityCell.innerHTML === 'Available' && userNameInput !== '' && teamNameInput !== '') {
-                availabilityCell.innerHTML = 'Reserved';
-                availabilityCell.style.color = 'red';
-                userCell.innerHTML = userNameInput;
-                teamCell.innerHTML = teamNameInput;
-                timeCell.innerHTML = getCurrentDateTime();
-            } else if (availabilityCell.innerHTML === 'Reserved' && (userNameInput === '' || teamNameInput === '')) {
-                availabilityCell.innerHTML = 'Available';
-                availabilityCell.style.color = 'green';
-                userCell.innerHTML = '-';
-                teamCell.innerHTML = '-';
-                timeCell.innerHTML = '-';
+        $.ajax({
+            type: "POST",
+            url: "database_operations.php",
+            data: {
+                action: 'reserve',
+                deviceId: deviceId,
+                userName: userNameInput,
+                teamName: teamNameInput
+            },
+            success: function (response) {
+                // Handle success
+                console.log(response);
+            },
+            error: function (error) {
+                // Handle error
+                console.error(error);
             }
-        }
+        });
+    }
 
-        function releaseDevice(deviceId) {
-            const availabilityCell = document.getElementById(`availability${deviceId}`);
-            const userCell = document.getElementById(`user${deviceId}`);
-            const teamCell = document.getElementById(`team${deviceId}`);
-            const timeCell = document.getElementById(`time${deviceId}`);
-            const userNameInput = document.getElementById(`userName${deviceId}`);
-            const teamNameInput = document.getElementById(`teamName${deviceId}`);
+    function releaseDevice(deviceId) {
+        // ... (Your existing JavaScript code)
 
-            if (availabilityCell.innerHTML === 'Reserved' && (userNameInput.value !== '' || teamNameInput.value !== '')) {
-                availabilityCell.innerHTML = 'Available';
-                availabilityCell.style.color = 'green';
-                userCell.innerHTML = '-';
-                teamCell.innerHTML = '-';
-                timeCell.innerHTML = '-';
-                userNameInput.value = ''; // Clear the user name input field
-                teamNameInput.value = ''; // Clear the team name input field
+        $.ajax({
+            type: "POST",
+            url: "database_operations.php",
+            data: {
+                action: 'release',
+                deviceId: deviceId
+            },
+            success: function (response) {
+                // Handle success
+                console.log(response);
+            },
+            error: function (error) {
+                // Handle error
+                console.error(error);
             }
-        }
+        });
+    }
     </script>
 </body>
 </html>
