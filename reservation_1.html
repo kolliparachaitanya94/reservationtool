@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Device Reservation System</title>
+    <style>
+        body {
+            text-align: center; /* Center align the content horizontally */
+        }
+
+        h1 {
+            margin-top: 20px; /* Add some top margin to the title for spacing */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Device Reservation System</h1>
+    <p>Select a device, enter your user name and team name, and use the "Reserve" or "Release" option:</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Device Name</th>
+                <th>Availability</th>
+                <th>User</th>
+                <th>Team</th>
+                <th>Time Reserved</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>New Areoflex</td>
+                <td id="availability1">Available</td>
+                <td id="user1">-</td>
+                <td id="team1">-</td>
+                <td id="time1">-</td>
+                <td>
+                    <input type="text" id="userName1" placeholder="Your Name">
+                    <input type="text" id="teamName1" placeholder="Team Name">
+                    <button onclick="reserveDevice(1)">Reserve</button>
+                    <button onclick="releaseDevice(1)">Release</button>
+                </td>
+            </tr>
+            <tr>
+                <td>TCS Areoflex</td>
+                <td id="availability2">Available</td>
+                <td id="user2">-</td>
+                <td id="team2">-</td>
+                <td id="time2">-</td>
+                <td>
+                    <input type="text" id="userName2" placeholder="Your Name">
+                    <input type="text" id="teamName2" placeholder="Team Name">
+                    <button onclick="reserveDevice(2)">Reserve</button>
+                    <button onclick="releaseDevice(2)">Release</button>
+                </td>
+            </tr>
+            <tr>
+                <td>E500 User1</td>
+                <td id="availability3">Available</td>
+                <td id="user3">-</td>
+                <td id="team3">-</td>
+                <td id="time3">-</td>
+                <td>
+                    <input type="text" id="userName3" placeholder="Your Name">
+                    <input type="text" id="teamName3" placeholder="Team Name">
+                    <button onclick="reserveDevice(3)">Reserve</button>
+                    <button onclick="releaseDevice(3)">Release</button>
+                </td>
+            </tr>
+            <tr>
+                <td>E500 User2</td>
+                <td id="availability4">Available</td>
+                <td id="user4">-</td>
+                <td id="team4">-</td>
+                <td id="time4">-</td>
+                <td>
+                    <input type="text" id="userName4" placeholder="Your Name">
+                    <input type="text" id="teamName4" placeholder="Team Name">
+                    <button onclick="reserveDevice(4)">Reserve</button>
+                    <button onclick="releaseDevice(4)">Release</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function getCurrentDateTime() {
+            const now = new Date();
+            const date = now.toLocaleDateString();
+            const time = now.toLocaleTimeString();
+            return `${date} ${time}`;
+        }
+
+        function reserveDevice(deviceId) {
+            const availabilityCell = document.getElementById(`availability${deviceId}`);
+            const userCell = document.getElementById(`user${deviceId}`);
+            const teamCell = document.getElementById(`team${deviceId}`);
+            const timeCell = document.getElementById(`time${deviceId}`);
+            const userNameInput = document.getElementById(`userName${deviceId}`).value;
+            const teamNameInput = document.getElementById(`teamName${deviceId}`).value;
+
+            if (availabilityCell.innerHTML === 'Available' && userNameInput !== '' && teamNameInput !== '') {
+                availabilityCell.innerHTML = 'Reserved';
+                availabilityCell.style.color = 'red';
+                userCell.innerHTML = userNameInput;
+                teamCell.innerHTML = teamNameInput;
+                timeCell.innerHTML = getCurrentDateTime();
+            } else if (availabilityCell.innerHTML === 'Reserved' && (userNameInput === '' || teamNameInput === '')) {
+                availabilityCell.innerHTML = 'Available';
+                availabilityCell.style.color = 'green';
+                userCell.innerHTML = '-';
+                teamCell.innerHTML = '-';
+                timeCell.innerHTML = '-';
+            }
+        }
+
+        function releaseDevice(deviceId) {
+            const availabilityCell = document.getElementById(`availability${deviceId}`);
+            const userCell = document.getElementById(`user${deviceId}`);
+            const teamCell = document.getElementById(`team${deviceId}`);
+            const timeCell = document.getElementById(`time${deviceId}`);
+            const userNameInput = document.getElementById(`userName${deviceId}`);
+            const teamNameInput = document.getElementById(`teamName${deviceId}`);
+
+            if (availabilityCell.innerHTML === 'Reserved' && (userNameInput.value !== '' || teamNameInput.value !== '')) {
+                availabilityCell.innerHTML = 'Available';
+                availabilityCell.style.color = 'green';
+                userCell.innerHTML = '-';
+                teamCell.innerHTML = '-';
+                timeCell.innerHTML = '-';
+                userNameInput.value = ''; // Clear the user name input field
+                teamNameInput.value = ''; // Clear the team name input field
+            }
+        }
+    </script>
+</body>
+</html>
