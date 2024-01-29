@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+session_start();
+
+// Check if the user is authenticated
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    header('Location: authenticate.php');
+    exit();
+}
 <html>
 <head>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
