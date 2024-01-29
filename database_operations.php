@@ -1,45 +1,49 @@
 <?php
-$servername = "https://kolliparachaitanya94.github.io/reservationtool/";
-$username = "chaitu";
-$password = "chaitu";
-$dbname = "DeviceReservationSystem";
+session_start();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Hardcoded user credentials for demonstration purposes
+$users = [
+    'chaitu' => 'chaitu',
+    'user2' => 'password2',
+    'user3' => 'password3',
+    'user4' => 'password4',
+    'user5' => 'password5',
+];
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Check if user credentials are valid
+    if (array_key_exists($username, $users) && $users[$username] === $password) {
+        $_SESSION['authenticated'] = true;
+        header('Location: index.php');
+        exit();
+    } else {
+        $errorMessage = 'Invalid username or password';
+    }
 }
-
-// Function to reserve a device
-function reserveDevice($deviceId, $userName, $teamName) {
-    global $conn;
-
-    $sql = "UPDATE DeviceReservations 
-            SET availability = 'Reserved', 
-                userName = '$userName', 
-                teamName = '$teamName', 
-                timeReserved = NOW() 
-            WHERE id = $deviceId";
-
-    return $conn->query($sql);
-}
-
-// Function to release a device
-function releaseDevice($deviceId) {
-    global $conn;
-
-    $sql = "UPDATE DeviceReservations 
-            SET availability = 'Available', 
-                userName = NULL, 
-                teamName = NULL, 
-                timeReserved = NULL 
-            WHERE id = $deviceId";
-
-    return $conn->query($sql);
-}
-
-// Close the database connection
-$conn->close();
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <?php if (isset($errorMessage)) : ?>
+        <p style="color: red;"><?php echo $errorMessage; ?></p>
+    <?php endif; ?>
+    <form action="" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
